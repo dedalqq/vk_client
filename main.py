@@ -29,7 +29,7 @@ class GUI:
         main_window.connect("destroy", self.destroy)
         main_window.show_all()
 
-        vk = vk_api('a76f40d41b6c0b81297b0ea2a94df475286003f229210c7d6260330fa03b10efee668c4360794df81e5c1')
+        vk = vk_api('')
         friends = vk.getFriends()
 
         for user in friends['response']:
