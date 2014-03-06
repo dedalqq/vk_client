@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from gi.repository import Gtk, GdkPixbuf, Gdk
+from gi.repository import Gtk, GdkPixbuf, Gdk, WebKit
 import os, sys
 import pprint
 import json
@@ -29,13 +29,22 @@ class GUI:
         main_window.connect("destroy", self.destroy)
         main_window.show_all()
 
-        vk = vk_api('')
-        friends = vk.getFriends()
+	if 0:
+		vk = vk_api('')
+		friends = vk.getFriends()
 
-        for user in friends['response']:
-            store.append([user['last_name'] + ' ' + user['first_name']])
+		for user in friends['response']:
+		    store.append([user['last_name'] + ' ' + user['first_name']])
 
-        users_list.set_model(store)
+		users_list.set_model(store)
+	else:
+		wd = Gtk.Window()
+		wd.set_title("example browser")
+		wd.resize(600, 400)
+		htm = WebKit.WebView()
+		htm.open('https://oauth.vk.com/authorize?client_id=4089597&scope=messages%2Caudio%2Coffline%2Cstatus%2Cdocs%2Cnotes&redirect_uri=blank.html&display=popup&response_type=token')
+		wd.add(htm)
+		wd.show_all()
 
 
 
