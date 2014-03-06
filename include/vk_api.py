@@ -34,6 +34,10 @@ class vk_api:
             parameters.append(name + '=' + urllib.unquote_plus(str(value)))
         return api_url + '/' + method + '?' + '&'.join(parameters)
 
+    def execUrl(self, url):
+        response = urllib2.urlopen(url)
+        return json.loads(response.read())
+
     def getLoginUrl(self):
         scope = ','.join(self.permission)
         return self.getUrl(
@@ -53,9 +57,19 @@ class vk_api:
             'friends.get',
             {
                 'access_token': self.token,
-                'fields': 'uid,first_name,last_name,nickname'
+                'fields': 'uid,first_name,last_name,nickname,photo'
             }
         )
-        response = urllib2.urlopen(url)
-        return json.loads(response.read())  #.response
-        #data = response.read())
+        friends = self.execUrl(url)
+        return friends['response']
+
+    def getUserInfo(self):
+        url = self.getUrl(
+            'users.get',
+            {
+                'access_token': self.token,
+                'fields': 'photo'
+            }
+        )
+        user_response = self.execUrl(url)
+        return user_response['response']

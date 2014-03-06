@@ -16,23 +16,33 @@ class application:
 
     def main(self):
 
-        vk = vk_api()
+        self.vk = vk_api()
 
-        auth = authorization(vk)
+        auth = authorization(self.vk)
 
         user_info = auth.getCurrentUser()
 
+        self.gui = gui_controller()
+
         if user_info is None:
             auth.showLoginWindow()
-        else:
-            print 2
+            user_info = auth.getCurrentUser()
+
+        self.init_app()
 
 
 
-        gui = gui_controller()
+
+        self.gui.getGtk().main()
 
 
-        gui.getGtk().main()
+        return None
 
+    def init_app(self):
 
+        user_info = self.vk.getUserInfo()
+        self.gui.setUserInfo(user_info)
+
+        friends = self.vk.getFriends()
+        #print friends
         return None

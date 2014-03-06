@@ -23,6 +23,16 @@ class gui_controller:
 
 
 
+    def loadUsers(self, users):
+
+        return None
+
+    def setUserInfo(self, user):
+        print user
+        name_label = self.builder.get_object('u_name')
+        name_label.set_text(user[0]['last_name'] + '\n' + user[0]['first_name'])
+
+        return None
 
     def gtk_main(self):
         Gtk.main()
