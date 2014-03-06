@@ -1,7 +1,7 @@
 from gi.repository import Gtk, GdkPixbuf, Gdk, WebKit
 import json
 import os.path
-
+import urlparse
 
 class authorization:
 
@@ -14,13 +14,23 @@ class authorization:
         wd = Gtk.Window()
         wd.set_title("example browser")
         wd.resize(600, 400)
+
         htm = WebKit.WebView()
         htm.open(self.vk_api.getLoginUrl())
+        htm.connect("load-finished", self.onLoad)
+
         wd.connect("destroy", Gtk.main_quit)
         wd.add(htm)
         wd.show_all()
 
         Gtk.main()
+
+    def onLoad(webview, frame, a):
+        url = frame.get_uri()
+        parsed = urlparse.urlparse(url)
+        url_data = urlparse.parse_qs(parsed.query)
+        #if 'access_token' in url_data:
+        print url_data.access_token
 
     def getCurrentUser(self):
         if os.path.isfile(self.file_name) == False:
